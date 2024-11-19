@@ -29,7 +29,10 @@ signin.post('/signin', async (req, res) => {
                 return res.json({
                     status: "SUCCESS",
                     message: "Sign in successful",
-                    data: user[0],
+                    userID: user[0]._id,  // Include userID in the response
+                        email: user[0].email,  // Return email (optional)
+                        name: user[0].name, 
+                        userId : user[0]._id
                 });
             } else {
                 return res.json({
