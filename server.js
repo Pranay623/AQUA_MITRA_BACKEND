@@ -8,6 +8,7 @@ const port = 5001;
 import router from './api/signup.js';
 import signin from './api/signin.js';
 import historyRouter from './api/history.js';
+import pre from './api/predict.js'; 
 
 
 app.use(express.json());
@@ -16,6 +17,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/user',router);
 app.use('/user',signin);
 app.use('/user',historyRouter);
+app.use('/user', pre); 
+
 
 app.get('/',(req,res) => {
     res.send('<a href="/auth/google">Authenticate with Google</a>')

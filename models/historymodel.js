@@ -11,8 +11,9 @@ const HistorySchema = new mongoose.Schema({
     state: { type: String, required: true },
     country: { type: String, required: true },
     weather: {
-        temperature: { type: Number, required: false }, // Optional
+        temperature: { type: Number}, 
     },
+    population: { type: Number, required: false },
     date: { type: Date, default: Date.now },
 });
 

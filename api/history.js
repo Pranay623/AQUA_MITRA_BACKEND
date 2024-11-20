@@ -5,7 +5,7 @@ const historyRouter = express.Router();
 
 // POST route: Save user history
 historyRouter.post('/save', async (req, res) => {
-    const { userId, city, state, country, weather } = req.body;
+    const { userId, city, state, country, weather,population } = req.body;
 
     // Validate input
     if (!userId || !city || !state || !country) {
@@ -22,6 +22,7 @@ historyRouter.post('/save', async (req, res) => {
             state,
             country,
             weather,
+            population,
             date: new Date(), // Add a date field
         });
 
@@ -30,6 +31,7 @@ historyRouter.post('/save', async (req, res) => {
         res.status(200).json({
             status: 'SUCCESS',
             message: 'History saved successfully',
+            data: newHistory,
         });
     } catch (error) {
         console.error('Error saving history:', error);
