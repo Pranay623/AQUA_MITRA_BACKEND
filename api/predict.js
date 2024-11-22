@@ -10,11 +10,11 @@ pre.post('/predict', async (req, res) => {
             return res.status(400).json({ message: 'Temperature and population are required' });
         }
 
-        const waterConsumptionForecast = Math.min((population * 0.5) + (temperature * 0.3), 100);
-        const waterAvailabilityPrediction = (population * 0.2) + (temperature * 1000);
-        let waterReusePotential = (population * 0.4) / temperature;
+         const waterConsumptionForecast = Math.max(1, (population * 0.1) / Math.sqrt(temperature + 1));
+        const waterAvailabilityPrediction = Math.max(1, (population * 0.05) / Math.log(temperature + 2));
+        let waterReusePotential = Math.sqrt(population) / (temperature + 1);
         waterReusePotential = Math.max(1, Math.min(waterReusePotential, 100));
-        const disasterReserve = Math.min((population * 0.1) + (temperature * 0.05), 100);
+        const disasterReserve = Math.max(1, Math.min((population * 0.05) / (temperature + 2), 50));
 
         res.json({
             waterConsumptionForecast,   
