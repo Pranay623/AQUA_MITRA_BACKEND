@@ -14,6 +14,12 @@ historyRouter.post('/save', async (req, res) => {
             message: 'User ID, city, state, and country are required',
         });
     }
+    if (city === 'Ghaziabad') {
+        return res.status(200).json({
+            status: 'Ignored',
+            message: 'History for the city "Ghaziabad" is not saved.',
+        });
+    }
 
     try {
         const newHistory = new History({
@@ -44,7 +50,7 @@ historyRouter.post('/save', async (req, res) => {
 
 // GET route: Retrieve user history
 historyRouter.get('/get', async (req, res) => {
-    const userId = req.query.userId; // Get userId from query parameters
+    const userId = req.query.userId;
 
     // Validate input
     if (!userId) {

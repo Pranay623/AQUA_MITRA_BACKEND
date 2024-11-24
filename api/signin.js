@@ -8,8 +8,9 @@ const signin = express.Router();
 signin.post('/signin', async (req, res) => {
     let { email, password } = req.body;
 
+    // Check for missing fields
     if (!email || !password) {
-        return res.json({
+        return res.status(400).json({
             status: "Failed",
             message: "Empty credentials",
         });
@@ -19,40 +20,44 @@ signin.post('/signin', async (req, res) => {
     password = password.trim();
 
     try {
-        const user = await User.find({ email });
-        
-        if (user.length > 0) {
-            const hashedPassword = user[0].password;
-            const isMatch = await bcrypt.compare(password, hashedPassword);
-    
-            if (isMatch) {
-                return res.json({
-                    status: "SUCCESS",
-                    message: "Sign in successful",
-                    userID: user[0]._id,  // Include userID in the response
-                        email: user[0].email,  // Return email (optional)
-                        name: user[0].name, 
-                        userId : user[0]._id
-                });
-            } else {
-                return res.json({
-                    status: "Failed",
-                    message: "Invalid password",
-                });
-            }
-        } else {
-            return res.json({
+        // Find the user with the given email
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.status(401).json({
                 status: "Failed",
                 message: "Invalid credentials entered",
             });
         }
+
+        // Compare the provided password with the hashed password in the database
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(401).json({
+                status: "Failed",
+                message: "Invalid password",
+            });
+        }
+
+        // Successful sign-in
+        return res.status(200).json({
+            status: "SUCCESS",
+            message: "Sign in successful",
+            userID: user._id,
+            email: user.email,
+            name: user.name,
+        });
+
     } catch (err) {
         console.error("Error during sign-in:", err);
-        return res.json({
+        return res.status(500).json({
             status: "Failed",
             message: "An error occurred while checking credentials",
         });
     }
 });
+
+
+
 
 export default signin;
