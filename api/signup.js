@@ -1,7 +1,7 @@
 import express from 'express';
 const router = express.Router();
 import bcrypt from 'bcrypt';
-import User from '../models/Model.js';
+import User from '../models/model.js';
 import 'dotenv/config';
 
 

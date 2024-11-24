@@ -20,10 +20,6 @@ app.use('/user',historyRouter);
 app.use('/user', pre); 
 
 
-app.get('/',(req,res) => {
-    res.send('<a href="/auth/google">Authenticate with Google</a>')
-})
-
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 }).on('error', (err) => {
