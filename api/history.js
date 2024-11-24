@@ -3,11 +3,9 @@ import History from '../models/historymodel.js';
 
 const historyRouter = express.Router();
 
-// POST route: Save user history
 historyRouter.post('/save', async (req, res) => {
-    const { userId, city, state, country, weather,population } = req.body;
+    const { userId, city, state, country, weather, population } = req.body;
 
-    // Validate input
     if (!userId || !city || !state || !country) {
         return res.status(400).json({
             status: 'Failed',
@@ -29,7 +27,7 @@ historyRouter.post('/save', async (req, res) => {
             country,
             weather,
             population,
-            date: new Date(), // Add a date field
+            date: new Date(),
         });
 
         await newHistory.save();
@@ -48,11 +46,9 @@ historyRouter.post('/save', async (req, res) => {
     }
 });
 
-// GET route: Retrieve user history
 historyRouter.get('/get', async (req, res) => {
     const userId = req.query.userId;
 
-    // Validate input
     if (!userId) {
         return res.status(400).json({
             status: 'Failed',
@@ -61,7 +57,6 @@ historyRouter.get('/get', async (req, res) => {
     }
 
     try {
-        // Fetch history for the user, sorted by date (latest first)
         const history = await History.find({ userId }).sort({ date: -1 });
 
         if (!history || history.length === 0) {

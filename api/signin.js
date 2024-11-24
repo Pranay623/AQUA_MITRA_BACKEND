@@ -8,7 +8,6 @@ const signin = express.Router();
 signin.post('/signin', async (req, res) => {
     let { email, password } = req.body;
 
-    // Check for missing fields
     if (!email || !password) {
         return res.status(400).json({
             status: "Failed",
@@ -20,7 +19,6 @@ signin.post('/signin', async (req, res) => {
     password = password.trim();
 
     try {
-        // Find the user with the given email
         const user = await User.findOne({ email });
 
         if (!user) {
@@ -30,7 +28,6 @@ signin.post('/signin', async (req, res) => {
             });
         }
 
-        // Compare the provided password with the hashed password in the database
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return res.status(401).json({
@@ -39,7 +36,6 @@ signin.post('/signin', async (req, res) => {
             });
         }
 
-        // Successful sign-in
         return res.status(200).json({
             status: "SUCCESS",
             message: "Sign in successful",
@@ -56,8 +52,5 @@ signin.post('/signin', async (req, res) => {
         });
     }
 });
-
-
-
 
 export default signin;
